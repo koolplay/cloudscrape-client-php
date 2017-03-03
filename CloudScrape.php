@@ -10,3 +10,5 @@ require_once __DIR__ . '/src/CloudScrapeResultDTO.php';
 require_once __DIR__ . '/src/CloudScrapeFileDTO.php';
 require_once __DIR__ . '/src/CloudScrapeRunDTO.php';
 require_once __DIR__ . '/src/CloudScrapeRequestException.php';
+require_once __DIR__ . '/src/CloudScrapeRobots.php';
+require_once __DIR__ . '/src/CloudScrapeRobotDTO.php';

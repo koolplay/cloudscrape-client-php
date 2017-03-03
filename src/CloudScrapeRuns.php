@@ -12,6 +12,59 @@ class CloudScrapeRuns {
     }
 
     /**
+     * @param string            $robotId
+     * @param CloudScrapeRunDTO $run
+     * @return CloudScrapeRunDTO
+     */
+    public function create($robotId, $run) {
+    	if( $robotId && is_object($run) ){
+    		$run->robotId = $robotId;
+		}
+    	if( $robotId && is_array($run) ){
+    		$run['robotId'] = $robotId;
+		}
+        return $this->client->requestJson("runs", 'POST', $run );
+    }
+
+    /**
+     * @param string            $robotId
+     * @param CloudScrapeRunDTO $run
+     * @return CloudScrapeRunDTO
+     */
+    private function _update($robotId, $run) {
+    	if( $robotId && is_object($run) ){
+    		$run->robotId = $robotId;
+		}
+    	if( $robotId && is_array($run) ){
+    		$run['robotId'] = $robotId;
+		}
+        return $this->client->requestJson("runs", 'PUT', $run );
+    }
+
+    /**
+     * @param string  $robotId
+     * @param array   $updates
+     * @return CloudScrapeRunDTO
+     */
+    public function update($robotId, $updates) {
+		$run = $this->get($robotId);
+		foreach( $updates as $key => $value ){
+			$run->$key = $value;
+		}
+        return $this->_update(null, $run);
+    }
+
+    /**
+     * @param string $robotId
+     * @param int    $offset
+     * @param int    $limit
+     * @return CloudScrapeRunListDTO
+     */
+    public function getRuns($robotId, $offset = 0, $limit = 30) {
+        return $this->client->requestJson("runs?" . http_build_query( [ "robotId" => $robotId, "offset" => $offset, "limit" => $limit ] ));
+    }
+
+    /**
      * @param string $runId
      * @return CloudScrapeRunDTO
      */

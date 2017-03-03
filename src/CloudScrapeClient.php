@@ -3,7 +3,7 @@
 class CloudScrapeClient {
 
     private $endPoint = 'https://app.dexi.io/api/';
-    private $userAgent = 'CS-PHP-CLIENT/1.0';
+    private $userAgent = 'DEXIIO-PHP-CLIENT/1.0';
     private $apiKey;
     private $accountId;
     private $accessKey;
@@ -20,6 +20,11 @@ class CloudScrapeClient {
      */
     private $runs;
 
+    /**
+     * @var CloudScrapeRobots
+     */
+    private $robots;
+
     function __construct($apiKey, $accountId) {
         $this->apiKey = $apiKey;
         $this->accountId = $accountId;
@@ -27,6 +32,7 @@ class CloudScrapeClient {
 
         $this->executions = new CloudScrapeExecutions($this);
         $this->runs = new CloudScrapeRuns($this);
+        $this->robots = new CloudScrapeRobots($this);
     }
 
     /**
@@ -102,8 +108,8 @@ class CloudScrapeClient {
         $content = $body ? json_encode($body) : null;
 
         $headers = array();
-        $headers[] = "X-CloudScrape-Access: $this->accessKey";
-        $headers[] = "X-CloudScrape-Account: $this->accountId";
+        $headers[] = "X-DexiIO-Access: $this->accessKey";
+        $headers[] = "X-DexiIO-Account: $this->accountId";
         $headers[] = "User-Agent: $this->userAgent";
         $headers[] = "Accept: application/json";
         $headers[] = "Content-Type: application/json";
@@ -123,7 +129,7 @@ class CloudScrapeClient {
             'https' => $requestDetails,
             'http' => $requestDetails
         ));
-
+        
         $outRaw = @file_get_contents($this->endPoint . $url, false, $context);
 
         $out = $this->parseHeaders($http_response_header);
@@ -205,6 +211,14 @@ class CloudScrapeClient {
      */
     public function runs() {
         return $this->runs;
+    }
+
+    /**
+     * Interact with robots
+     * @return CloudScrapeRobots
+     */
+    public function robots() {
+        return $this->robots;
     }
 
 }
