@@ -101,8 +101,8 @@ class CloudScrapeRuns {
 	 *
 	 * @return CloudScrapeExecutionDTO
 	 */
-	public function execute( $runId ) {
-		return $this->client->requestJson( "runs/$runId/execute", 'POST' );
+	public function execute( $runId, $connect = 'false' ) {
+		return $this->client->requestJson( "runs/$runId/execute?connect=$connect", 'POST' );
 	}
 	
 	/**
@@ -114,8 +114,14 @@ class CloudScrapeRuns {
 	 *
 	 * @return CloudScrapeResultDTO
 	 */
-	public function executeSync( $runId ) {
-		return $this->client->requestJson( "runs/$runId/execute/wait", 'POST' );
+	public function executeSync( $runId, $connect = 'false', $format = 'json', $deleteAfter = 'true'  ) {
+		$query = http_build_query( array(
+			"connect"     => $connect,
+			"format"	  => $format,
+			"deleteAfter" => $deleteAfter,
+		) );
+
+		return $this->client->requestJson( "runs/$runId/execute/wait?$query", 'POST' );
 	}
 	
 	/**
@@ -126,8 +132,8 @@ class CloudScrapeRuns {
 	 *
 	 * @return CloudScrapeExecutionDTO
 	 */
-	public function executeWithInput( $runId, $inputs ) {
-		return $this->client->requestJson( "runs/$runId/execute/inputs", 'POST', $inputs );
+	public function executeWithInput( $runId, $inputs, $connect = 'false' ) {
+		return $this->client->requestJson( "runs/$runId/execute/inputs?connect=$connect", 'POST', $inputs );
 	}
 	
 	/**
@@ -140,8 +146,14 @@ class CloudScrapeRuns {
 	 *
 	 * @return CloudScrapeResultDTO
 	 */
-	public function executeBulkSync( $runId, $inputs ) {
-		return $this->client->requestJson( "runs/$runId/execute/bulk/wait", 'POST', $inputs );
+	public function executeBulkSync( $runId, $inputs, $connect = 'false', $format = 'json', $deleteAfter = 'true'  ) {
+		$query = http_build_query( array(
+			"connect"     => $connect,
+			"format"	  => $format,
+			"deleteAfter" => $deleteAfter,
+		) );
+
+		return $this->client->requestJson( "runs/$runId/execute/bulk/wait?$query", 'POST', $inputs );
 	}
 	
 	/**
@@ -152,8 +164,8 @@ class CloudScrapeRuns {
 	 *
 	 * @return CloudScrapeExecutionDTO
 	 */
-	public function executeBulk( $runId, $inputs ) {
-		return $this->client->requestJson( "runs/$runId/execute/bulk", 'POST', $inputs );
+	public function executeBulk( $runId, $inputs, $connect = 'false' ) {
+		return $this->client->requestJson( "runs/$runId/execute/bulk?connect=$connect", 'POST', $inputs );
 	}
 	
 	/**
@@ -168,9 +180,10 @@ class CloudScrapeRuns {
 	 *
 	 * @return CloudScrapeResultDTO
 	 */
-	public function executeWithInputSync( $runId, $inputs, $connect = 'false', $deleteAfter = 'true' ) {
+	public function executeWithInputSync( $runId, $inputs, $connect = 'false', $format = 'json', $deleteAfter = 'true' ) {
 		$query = http_build_query( array(
 			"connect"     => $connect,
+			"format"	  => $format,
 			"deleteAfter" => $deleteAfter,
 		) );
 		
